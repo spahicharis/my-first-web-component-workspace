@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <base href="/">
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+<h1>Test</h1>
+
+<div class="">
+  <div id="my-first-web-component">
+    My component would be here
+  </div>
+</div>
+
+<script>
+  function loadScriptByURL(id, url, callback) {
+    const doesScriptExist = document.getElementById(id);
+
+    if (!doesScriptExist) {
+      const script = document.createElement("script");
+      script.type = "text/javascript";
+      script.src = url;
+      script.id = id;
+      script.onload = () => {
+        if (callback) callback();
+      };
+      document.body.appendChild(script);
+    }
+
+    if (doesScriptExist && callback) callback();
+  }
+
+  const myFirstWebComponentCoreOptions = {};
+
+  loadScriptByURL("myFirstWebComponentLib", "dist/web-component-result/my-first-web-component-lib.js", () => {
+    console.log("Script URL loaded!");
+    initMyFirstWebComponent()
+  });
+
+
+  let myFirstWebComponentCore
+
+  const initMyFirstWebComponent = async () => {
+    myFirstWebComponentCore = await myFirstWebComponentLib.factory(myFirstWebComponentCoreOptions)
+    const coreOptions = {
+      onClick: (state) => {
+        console.log('My First Web Component onClick', state)
+      },
+      onError: (error) => {
+        console.log('My First Web Component onError', error)
+      },
+    }
+
+    myFirstWebComponentCore
+      .create({config: coreOptions})
+      .mount('#my-first-web-component')
+
+  }
+
+</script>
+
+</body>
+</html>

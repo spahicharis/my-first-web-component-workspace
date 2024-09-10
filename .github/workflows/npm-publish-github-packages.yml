@@ -30,6 +30,7 @@ jobs:
           node-version: 20
           registry-url: https://npm.pkg.github.com/
       - run: npm ci
+      - run: npm run build:my-first-web-component
       - run: npm run publish:my-first-web-component
         env:
           NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}

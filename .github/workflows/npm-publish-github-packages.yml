@@ -4,8 +4,10 @@
 name: Node.js Package
 
 on:
-  push:
-    branches: [ "main" ]
+  #  push:
+  #    branches: [ "main" ]
+  release:
+    types: [ created ]
 
 jobs:
   build-publish-gpr:

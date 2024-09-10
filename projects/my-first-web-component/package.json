@@ -2,7 +2,7 @@
   "name": "my-first-web-component",
   "version": "0.0.2",
   "publishConfig": {
-    "registry": "https://npm.pkg.github.com"
+    "@spahicharis:registry": "https://npm.pkg.github.com"
   },
   "peerDependencies": {
     "@angular/common": "^18.2.0",

@@ -10,7 +10,7 @@
     "create:my-first-web-component-lib": "npm run build:my-first-web-component && npm run build:my-first-web-component-builder && npm run package:my-first-web-component-lib",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "http-serve": "http-server . -p 4203"
+    "http-server": "http-server . -p 4203"
   },
   "private": true,
   "dependencies": {

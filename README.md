@@ -17,7 +17,7 @@ To build the project, you will need to run the following commands:
 
 - `npm install` - This will install all the dependencies for the project
 - `npm run build:my-first-web-component` - This will build the MyFirstWebComponent
-- `npm run build:my-first-web-component-bundler` - This will build the MyFirstWebComponentBundler
+- `npm run build:my-first-web-component-builder` - This will build the MyFirstWebComponentBundler
 - `npm run package:my-first-web-component-lib` - This will package the MyFirstWebComponent into a library
 
 or you can run `npm run create:my-first-web-component-lib` to complete these commands at once.

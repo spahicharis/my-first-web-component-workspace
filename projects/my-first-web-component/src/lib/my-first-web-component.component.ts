@@ -1,10 +1,11 @@
-import { AfterViewInit, Component, EventEmitter, OnDestroy, Output } from '@angular/core';
+import { AfterViewInit, Component, effect, EventEmitter, Input, OnDestroy, Output } from '@angular/core';
 import { Subscription } from "rxjs";
 import { WindowEventStateService } from "./services/window-event-state.service";
 import { IconFieldModule } from "primeng/iconfield";
 import { InputIconModule } from "primeng/inputicon";
 import { InputTextModule } from "primeng/inputtext";
 import { Button } from "primeng/button";
+import { DialogModule } from "primeng/dialog";
 
 @Component({
   selector: 'lib-my-first-web-component',
@@ -13,7 +14,8 @@ import { Button } from "primeng/button";
     IconFieldModule,
     InputIconModule,
     InputTextModule,
-    Button
+    Button,
+    DialogModule
   ],
   template: `
     <p>
@@ -26,6 +28,11 @@ import { Button } from "primeng/button";
     </p-iconField>
 
     <p-button label="Click" (onClick)="sendMessage()"/>
+
+    <p-button label="Open Empty Dialog" (onClick)="showDialog()"></p-button>
+    <p-dialog [(visible)]="isDialogVisible" [header]="dialogHeader" (onHide)="onHideDialog()">
+      <ng-content></ng-content>
+    </p-dialog>
   `,
   styles: `
   `
@@ -33,12 +40,16 @@ import { Button } from "primeng/button";
 export class MyFirstWebComponentComponent implements AfterViewInit, OnDestroy {
   protected readonly subscriptions: Subscription[] = []
 
+  @Input() dialogHeader: string = 'Default Dialog Header';
+  @Input() isDialogVisible: boolean = false;
+  @Output() dialogOpened = new EventEmitter<void>();
+  @Output() dialogClosed = new EventEmitter<void>();
+
   @Output() onClick = new EventEmitter();
 
   constructor(
     public readonly windowEventState: WindowEventStateService,
   ) {
-    console.log('x: Hello from MyFirstWebComponentComponent constructor');
   }
 
   ngAfterViewInit(): void {
@@ -51,12 +62,21 @@ export class MyFirstWebComponentComponent implements AfterViewInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    // console.log('Card component ngOnDestroy')
     this.subscriptions?.forEach(sub => sub.unsubscribe())
   }
 
   sendMessage() {
     console.log('x: sendMessage()');
     this.onClick.emit();
+  }
+
+  showDialog() {
+    this.isDialogVisible = true;
+    this.dialogOpened.emit();
+  }
+
+  onHideDialog() {
+    this.isDialogVisible = false;
+    this.dialogClosed.emit();
   }
 }

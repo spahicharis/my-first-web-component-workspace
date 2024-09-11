@@ -1,4 +1,6 @@
 import { ActiveComponentHandler } from "./active-component-handler";
+import { MyFirstWebComponentCoreOptions } from "./models";
+import { MyFirstWebComponentEventsConfig } from "./my-first-web-component-events-config";
 
 export const COMPONENT_ELEMENT_NAME = 'my-first-web-component'
 
@@ -11,7 +13,9 @@ function returnValueAndDeleteProperty<T>(target: any, key: string): T | null {
 export class MyFirstWebComponentCore {
   protected activeComponent: ActiveComponentHandler = ActiveComponentHandler.default()
 
-  constructor() {
+  constructor(
+    private readonly coreOptions: MyFirstWebComponentCoreOptions
+  ) {
   }
 
   /*
@@ -22,13 +26,15 @@ export class MyFirstWebComponentCore {
   }
 
   public create({config}: {
-    config: any
+    config: MyFirstWebComponentEventsConfig
   }): MyFirstWebComponentCore {
     this.createAndStoreHtmlElement(config)
     return this
   }
 
-  protected createAndStoreHtmlElement(config: any): HTMLElement | null {
+  protected createAndStoreHtmlElement(config: MyFirstWebComponentEventsConfig): HTMLElement | null {
+
+    const componentData = this.coreOptions;
 
     const component = document.createElement(COMPONENT_ELEMENT_NAME)
     type ChangeListener = (state: any) => void;
@@ -50,6 +56,7 @@ export class MyFirstWebComponentCore {
       });
     }
 
+    component.setAttribute('config', btoa(JSON.stringify(componentData))); //old way, base64-encoded ASCII
     this.activeComponent.component = component
     return this.activeComponent.component
   }

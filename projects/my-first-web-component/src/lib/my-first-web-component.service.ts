@@ -1,9 +1,17 @@
 import { Injectable } from '@angular/core';
+import { HttpClient } from "@angular/common/http";
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class MyFirstWebComponentService {
 
-  constructor() { }
+  url = '/pokemon/charizard';
+
+  constructor(
+    private http: HttpClient
+  ) {
+  }
+
+  getPikachu(rootUrl: string) {
+    return this.http.get(rootUrl + this.url);
+  }
 }

@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, effect, EventEmitter, Input, OnDestroy, Output } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core';
 import { Subscription } from "rxjs";
 import { WindowEventStateService } from "./services/window-event-state.service";
 import { IconFieldModule } from "primeng/iconfield";
@@ -6,6 +6,9 @@ import { InputIconModule } from "primeng/inputicon";
 import { InputTextModule } from "primeng/inputtext";
 import { Button } from "primeng/button";
 import { DialogModule } from "primeng/dialog";
+import { MyFirstWebComponentConfig } from "./models";
+import { MyFirstWebComponentService } from "./my-first-web-component.service";
+import { NgIf, NgOptimizedImage } from "@angular/common";
 
 @Component({
   selector: 'lib-my-first-web-component',
@@ -15,7 +18,10 @@ import { DialogModule } from "primeng/dialog";
     InputIconModule,
     InputTextModule,
     Button,
-    DialogModule
+    DialogModule,
+    NgIf,
+    NgOptimizedImage,
+
   ],
   template: `
     <p>
@@ -33,12 +39,51 @@ import { DialogModule } from "primeng/dialog";
     <p-dialog [(visible)]="isDialogVisible" [header]="dialogHeader" (onHide)="onHideDialog()">
       <ng-content></ng-content>
     </p-dialog>
+
+    <div>
+      <img alt="Pokemon front" *ngIf="imageUrl" [ngSrc]="imageUrl" height="300"
+           width="300">
+    </div>
   `,
   styles: `
-  `
+  `,
+  providers: [
+    MyFirstWebComponentService
+  ]
 })
 export class MyFirstWebComponentComponent implements AfterViewInit, OnDestroy {
+
   protected readonly subscriptions: Subscription[] = []
+
+  private _config: MyFirstWebComponentConfig | undefined;
+
+  @Input() set config(value: MyFirstWebComponentConfig | string) {
+    console.log('x: config:', value);
+
+    let tempData: MyFirstWebComponentConfig | undefined;
+
+    if (typeof value === 'string') {
+
+      console.log('Voucher as string:', value)
+      const serializedData = JSON.parse(atob(value)) //reverse operation of btoa from core
+
+      console.log('Voucher as serializedData:', serializedData)
+      // tmpData = voucherOptionsConfigDeserialization(serializedData as SerializedVoucherComponentFactoryOptions)
+
+      tempData = serializedData as MyFirstWebComponentConfig;
+
+    } else {
+      tempData = value;
+    }
+
+    if (!tempData) {
+      setTimeout(() => {//cannot perform input & output at the same time
+        console.log('Config data empty!')
+      })
+    }
+
+    this._config = tempData;
+  }
 
   @Input() dialogHeader: string = 'Default Dialog Header';
   @Input() isDialogVisible: boolean = false;
@@ -47,9 +92,16 @@ export class MyFirstWebComponentComponent implements AfterViewInit, OnDestroy {
 
   @Output() onClick = new EventEmitter();
 
+  imageUrl = "";
+
   constructor(
     public readonly windowEventState: WindowEventStateService,
+    private myFirstWebComponentService: MyFirstWebComponentService
   ) {
+  }
+
+  get config(): MyFirstWebComponentConfig | undefined {
+    return this._config;
   }
 
   ngAfterViewInit(): void {
@@ -58,6 +110,13 @@ export class MyFirstWebComponentComponent implements AfterViewInit, OnDestroy {
         const windowEventType = event.data?.eventType;
         console.log('x: windowEventType:', windowEventType)
       })
+    )
+
+    this.subscriptions.push(
+      this.myFirstWebComponentService.getPikachu(this.config?.baseUrl!)
+        .subscribe((response: any) => {
+          this.imageUrl = response.sprites.front_default;
+        })
     )
   }
 

@@ -8,10 +8,13 @@
     "build:my-first-web-component-builder": "ng build my-first-web-component-builder --output-hashing none --configuration production",
     "package:my-first-web-component-lib": "webpack",
     "create:my-first-web-component-lib": "npm run build:my-first-web-component && npm run build:my-first-web-component-builder && npm run package:my-first-web-component-lib",
+    "create:my-first-web-component-react": "create:my-first-web-component-lib && npm run copy:package-for-react",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "http-server": "http-server . -p 4203",
-    "publish:my-first-web-component": "cd dist/my-first-web-component && npm publish"
+    "publish:my-first-web-component": "cd dist/my-first-web-component && npm publish",
+    "publish:my-first-web-component-react": "cd dist/web-component-result && npm publish",
+    "copy:package-for-react": "node copy-package-for-react.js"
   },
   "private": true,
   "dependencies": {

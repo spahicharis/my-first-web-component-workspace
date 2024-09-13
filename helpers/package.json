@@ -1,0 +1,12 @@
+{
+  "name": "@spahicharis/my-first-web-component-react",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/spahicharis/my-first-web-component-workspace.git"
+  },
+  "version": "0.0.2",
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
+  "main": "my-first-web-component-lib.js"
+}

@@ -9,6 +9,10 @@ import { DialogModule } from "primeng/dialog";
 import { MyFirstWebComponentConfig } from "./models";
 import { MyFirstWebComponentService } from "./my-first-web-component.service";
 import { NgIf, NgOptimizedImage } from "@angular/common";
+import {
+  SerializedMyFirstWebComponentFactoryOptions,
+  voucherOptionsSerialization
+} from "./my-first-web-component-core-options";
 
 @Component({
   selector: 'lib-my-first-web-component',
@@ -65,12 +69,10 @@ export class MyFirstWebComponentComponent implements AfterViewInit, OnDestroy {
     if (typeof value === 'string') {
 
       console.log('Voucher as string:', value)
-      const serializedData = JSON.parse(atob(value)) //reverse operation of btoa from core
+      const serializedData = JSON.parse(value) //reverse operation of btoa from core
 
       console.log('Voucher as serializedData:', serializedData)
-      // tmpData = voucherOptionsConfigDeserialization(serializedData as SerializedVoucherComponentFactoryOptions)
-
-      tempData = serializedData as MyFirstWebComponentConfig;
+      tempData = voucherOptionsSerialization(serializedData as SerializedMyFirstWebComponentFactoryOptions)
 
     } else {
       tempData = value;
@@ -98,6 +100,7 @@ export class MyFirstWebComponentComponent implements AfterViewInit, OnDestroy {
     public readonly windowEventState: WindowEventStateService,
     private myFirstWebComponentService: MyFirstWebComponentService
   ) {
+    // (globalThis as any).ngZone = inject(NgZone);
   }
 
   get config(): MyFirstWebComponentConfig | undefined {

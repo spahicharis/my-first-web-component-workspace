@@ -1,6 +1,7 @@
 import { ActiveComponentHandler } from "./active-component-handler";
 import { MyFirstWebComponentCoreOptions } from "./models";
 import { MyFirstWebComponentEventsConfig } from "./my-first-web-component-events-config";
+import { voucherOptionsSerialization } from "./my-first-web-component-core-options";
 
 export const COMPONENT_ELEMENT_NAME = 'my-first-web-component'
 
@@ -33,14 +34,14 @@ export class MyFirstWebComponentCore {
   }
 
   protected createAndStoreHtmlElement(config: MyFirstWebComponentEventsConfig): HTMLElement | null {
+    const componentData = voucherOptionsSerialization(this.coreOptions);
 
-    const componentData = this.coreOptions;
+    console.log('Core componentData:', componentData);
 
     const component = document.createElement(COMPONENT_ELEMENT_NAME)
     type ChangeListener = (state: any) => void;
 
     const onClickFn = returnValueAndDeleteProperty(config, "onClick") as ChangeListener;
-    console.log('test::Embedded-fieldsCardCore:onClickFn:', onClickFn)
     if (onClickFn) {
       component.addEventListener('onClick', (event: any) => {
         onClickFn((event as CustomEvent)?.detail)
@@ -48,7 +49,6 @@ export class MyFirstWebComponentCore {
     }
 
     const onErrorFn = returnValueAndDeleteProperty(config, "onError") as ChangeListener
-    console.log('test::Embedded-fieldsCardCore:onErrorFn:', onErrorFn)
     if (onErrorFn) {
       component.addEventListener('onError', (event: any) => {
         console.log("test core onError:", event);

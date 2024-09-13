@@ -32,15 +32,22 @@ To run the project, you will need to run the following commands:
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
 
+## Using component in ReactJS projects
+
+To use the MyFirstWebComponent in React projects, you will need to do the following:
+- Install the component using `npm install @spahicharis/my-first-web-component-react`
+- Import the component using `import '@spahicharis/my-first-web-component-react'`
+- Put component in your React project using `<my-first-web-component></my-first-web-component>`
+
 ## Using component in other projects
 
 To use the MyFirstWebComponent in other projects, you will need to do the following:
 - Setup registry access to the component using `npm login --registry=https://npm.pkg.github.com --scope=@spahicharis`
 - When prompted, as username enter: `spahicharis` and as password enter the generated token (will be provided internally)
-- As a result, .npmrc file will be created/updated in your %user% directory 
+- As a result, .npmrc file will be created/updated in your %user% directory
 - Install the component using `npm install @spahicharis/my-first-web-component`
 - Import the component using `import '@spahicharis/my-first-web-component'`
-
+- 
 ## Code scaffolding
 
 Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
